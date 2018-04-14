@@ -293,41 +293,6 @@ class DbManagerOpenface(DbManager):
                 cur.close()
                 # db.close()
 
-
-
-
-
-                # print (datetime.date(datetime.now()))
-                # for row in classes:
-                #     abc = []
-                #     abc.append(row)
-                #     print (abc)
-
-
-
-                # Classes = [dict(name=row[0], ph_no=row[1]) for row in c.fetchall()]
-
-                # cur.execute("Create table if not exists Names (name TEXT, Timestamp DATETIME)")
-                # db.commit()
-                # cur.execute("select count(*) from (select name from Names where name =?)", ((hit['name']),))
-                # cur2 = db.cursor()
-                # self._log.info(name)
-
-
-                # cur2.execute("select count(*) from (select ULID,TimeStamp from Attendance where ULID =? and "
-                #              "time(TimeStamp) between time(?) and time(?))", (name,time_stamp + timedelta(minutes=-1),time_stamp + timedelta(hours=1.5)))
-                # name_counter = cur2.fetchone()
-                # print("name_counter: ", name_counter)
-                #
-                # # self._log.info(name_counter)
-                # if name_counter == (0,):
-                #     # cur.execute("Insert into Names values(?,?)", (hit['name'], time_stamp))
-                #     cur2.execute("Insert into Attendance (ULID, TimeStamp, Day) values(?,?,?)", (name, time_stamp, calendar.day_name[(time_stamp).weekday()]))
-                #     db.commit()
-                # else:
-                #     pass
-                # cur.close()
-                # cur2.close()
         except sqlite3.Error as e:
             self._log.error(str(e))
             raise e
