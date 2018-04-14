@@ -33,18 +33,18 @@ _DB_FILE = os.path.join(faceapi.BASE_DIR, "data", "facedb.db3")
 _SQL_CMD_CREATE_TAB = "CREATE TABLE IF NOT EXISTS "
 _SQL_TABLE_FACE = (
     "face_table(hash TEXT PRIMARY KEY, "
+    "ULID TEXT, "
     "name TEXT, "
     "eigen TEXT, "
     "src_hash TEXT, "
     "face_img TEXT, "
-    "class_id INTEGER,"
-    "Time_stamp DATETIME DEFAULT CURRENT_TIMESTAMP)")
+    "class_id INTEGER)")
 _SQL_GET_ALL_FACE = "SELECT * FROM face_table"
 _SQL_ROWS = "SELECT COUNT(*) FROM face_table"
 _SQL_ADD_FACE = (
     "INSERT or REPLACE INTO "
-    "face_table (hash, name, eigen, src_hash, face_img, class_id)"
-    "VALUES(?, ?, ?, ?, ?, ?)")
+    "face_table "
+    "VALUES(?, ?, ?, ?, ?, ?, ?)")
 _SQL_GET_FACE_WITH_FIELD = "SELECT * FROM face_table WHERE {}={} LIMIT {}"
 _SQL_DISTINCT_SEARCH = "select distinct {} from face_table order by {}"
 
@@ -127,7 +127,7 @@ class DbManagerOpenface(DbManager):
         for record in record_list:
             rep_str = ",".join(str(x) for x in record.eigen)
             info = (
-                record.hash, record.name, rep_str,
+                '1',record.hash, record.name, rep_str,
                 record.src_hash, record.face_img, record.class_id)
             self._log.debug("add: " + str(info))
             sql_add_list.append(info)
@@ -176,3 +176,40 @@ class DbManagerOpenface(DbManager):
             raise e
 
         return rows
+
+    def create_unique_db(self, name):
+        # conn = _sqlite3.connect(".db3")
+        time_stamp = sqlite3.datetime.datetime.now()
+
+        db_file = os.path.join(faceapi.BASE_DIR, "../web", "detected_faces.db3")
+
+        dir = os.path.dirname(db_file)
+        if not os.path.exists(dir):
+            os.makedirs(dir)
+
+
+        try:
+            with sqlite3.connect(db_file) as db:
+                cur = db.cursor()
+                cur.execute("Create table if not exists Names (name TEXT, Timestamp DATETIME)")
+                db.commit()
+                # cur.execute("select count(*) from (select name from Names where name =?)", ((hit['name']),))
+                cur2 = db.cursor()
+                # self._log.info(name)
+                cur2.execute("select count(*) from (select name from Names where name =?)", (name,))
+                name_counter = cur2.fetchone()
+
+                # self._log.info(name_counter)
+                if name_counter == (0,):
+                    # cur.execute("Insert into Names values(?,?)", (hit['name'], time_stamp))
+                    cur2.execute("Insert into Names values(?,?)", (name, time_stamp))
+                    db.commit()
+                else:
+                    # cur.execute("update Names set Timestamp=? where name=?", (time_stamp, (hit['name']),))
+                    cur2.execute("update Names set Timestamp=? where name=?", (time_stamp, name))
+                    db.commit()
+                cur.close()
+                cur2.close()
+        except sqlite3.Error as e:
+            self._log.error(str(e))
+            raise e
