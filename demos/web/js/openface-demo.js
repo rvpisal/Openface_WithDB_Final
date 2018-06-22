@@ -225,6 +225,7 @@ alert('db_list')
                 hash: j.hash,
                 identity: j.identity,
                 // image: getDataURLFromRGB(j.content),
+//                image: "/db_face/" + str(j.name).toLowerCase() + "/" + j.hash + ".jpg",
                 image: "/db_face/" + j.name + "/" + j.hash + ".jpg",
                 representation: j.representation
             });

@@ -228,16 +228,16 @@ class DbManagerOpenface(DbManager):
         if not os.path.exists(dir):
             os.makedirs(dir)
 
-
         try:
             with sqlite3.connect(db_file) as db:
 
-                db.execute("CREATE TABLE if not exists Attendance(Course_id INTEGER,ULID TEXT, TimeStamp TEXT, Day TEXT,"
-                           " PRIMARY KEY(Course_id,Day))")
-                db.execute("CREATE TABLE if not exists Class_Schedule (Course_id INTEGER, Subject_name text, Day Text, "
-                            "Start_Time date, End_Time date, PRIMARY KEY(Course_id,Day))")
-                db.execute("CREATE TABLE if not exists Registration_Details (ULID TEXT, Course_id INTEGER, "
-                           "PRIMARY KEY(ULID,Course_id))")
+                db.execute("CREATE TABLE IF NOT EXISTS Attendance (Course_id TEXT,ULID TEXT,TimeStamp	TEXT,Day TEXT, "
+                           "PRIMARY KEY(Course_id,TimeStamp, ULID))")
+                db.execute("CREATE TABLE IF NOT EXISTS Class_Schedule (Course_id TEXT,Subject_name text, Day Text,"
+                           "Start_Time	date,End_Time date,PRIMARY KEY(Course_id,Day))")
+                db.execute(
+                    "CREATE TABLE IF NOT EXISTS Registration_Details (ULID	TEXT,Student_Name TEXT,Course_id INTEGER"
+                    ",PRIMARY KEY(ULID,Course_id))")
 
                 cur = db.cursor()
 

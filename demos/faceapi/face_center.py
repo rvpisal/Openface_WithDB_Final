@@ -110,6 +110,7 @@ class FaceCenterOf(FaceCenter):
 
             self._training_id = len(people_list)
 
+        # save_dir = os.path.join(self._trained_face_dir, str(name).lower())
         save_dir = os.path.join(self._trained_face_dir, name)
         if not os.path.exists(save_dir):
             os.makedirs(save_dir)
