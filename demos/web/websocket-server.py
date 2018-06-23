@@ -318,7 +318,7 @@ class OpenFaceServerProtocol(WebSocketServerProtocol):
         imgF.seek(0)
         img = Image.open(imgF)
 
-        name = self.people[identity]
+        name = str(self.people[identity]).lower()
         _face_center.start_train(name)
         # trained_list = _face_center.train([imgdata], name)
         info = _face_center.train(img)
