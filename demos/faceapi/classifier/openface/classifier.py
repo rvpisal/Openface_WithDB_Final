@@ -164,7 +164,7 @@ class ClassifierOf(FaceClassifier):
             hit['face_img'],
             hit['class_id'])
         resultRecord.scroe = hit_p
-        self._face_db.create_unique_db(hit['name'])
+        self._face_db.Mark_Attendance(hit['name'])
         return resultRecord
 
     def _trainData(self):

@@ -177,7 +177,7 @@ class DbManagerOpenface(DbManager):
 
         return rows
 
-    def create_unique_db(self, name):
+    def Mark_Attendance(self, name):
         # conn = _sqlite3.connect(".db3")
         time_stamp = sqlite3.datetime.datetime.now()
 
