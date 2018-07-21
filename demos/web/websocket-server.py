@@ -444,6 +444,11 @@ if __name__ == '__main__':
 
     factory = WebSocketServerFactory("ws://localhost:{}".format(args.port),
                                      debug=False)
+
+    # factory = WebSocketServerFactory("ws://localhost:{}".format(args.port),
+    #                                  debug=False)
+
+
     factory.protocol = OpenFaceServerProtocol
 
     reactor.listenTCP(args.port, factory)
